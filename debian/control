@@ -1,0 +1,14 @@
+Source: pomowatch
+Section: utils
+Priority: optional
+Maintainer: PomoWatch Maintainers <maintainers@example.com>
+Build-Depends: debhelper-compat (= 13), dh-python
+Standards-Version: 4.7.0
+Rules-Requires-Root: no
+
+Package: pomowatch
+Architecture: all
+Depends: ${misc:Depends}, ${python3:Depends}, python3, python3-tk, python3-numpy, python3-sounddevice, python3-ttkthemes
+Description: Pomodoro timer desktop app built with Tkinter
+ A lightweight Pomodoro timer with work/break cycles,
+ session counters, and chime notifications.

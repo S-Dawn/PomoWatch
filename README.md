@@ -35,10 +35,97 @@ From the project root:
 uv run main.py
 ```
 
+## Docker
+
+This app is a desktop GUI, so Docker needs access to your host display (X11) and optional audio device.
+
+Build image:
+
+```bash
+docker build -t pomowatch:latest .
+```
+
+Run image on Linux with X11 and sound:
+
+```bash
+xhost +local:docker
+docker run --rm \
+	-e DISPLAY=$DISPLAY \
+	-v /tmp/.X11-unix:/tmp/.X11-unix \
+	--device /dev/snd \
+	pomowatch:latest
+xhost -local:docker
+```
+
+Files used:
+
+- `Dockerfile`
+- `.dockerignore`
+
+## Ubuntu `apt install` release path
+
+If you want users to install with:
+
+```bash
+sudo apt install pomowatch
+```
+
+you need to publish a Debian package to an APT repository. The most practical route for personal/open-source apps is a Launchpad PPA.
+
+### 1. Build and test the Debian package locally
+
+Debian packaging metadata is included in `debian/`.
+
+Install packaging tools:
+
+```bash
+sudo apt update
+sudo apt install -y build-essential devscripts debhelper dh-python dpkg-dev
+```
+
+Build:
+
+```bash
+dpkg-buildpackage -us -uc
+```
+
+Install generated package for local test:
+
+```bash
+sudo apt install ../pomowatch_0.1.0-1_all.deb
+```
+
+### 2. Publish through Launchpad PPA
+
+1. Create a PPA on Launchpad.
+2. Update `debian/changelog` for each release.
+3. Generate source package:
+
+```bash
+debuild -S -sa
+```
+
+4. Upload with `dput` to your PPA.
+5. After Launchpad builds successfully, users can install via:
+
+```bash
+sudo add-apt-repository ppa:<your-launchpad-id>/<ppa-name>
+sudo apt update
+sudo apt install pomowatch
+```
+
+### Note about Ubuntu official repositories
+
+Publishing directly in Ubuntu official repositories requires Debian sponsorship and Ubuntu archive processes; this is longer-term. A PPA is the fastest path to `apt install`.
+
 ## Project structure
 
 ```text
 .
+├── .dockerignore
+├── Dockerfile
+├── debian/
+├── packaging/
 ├── main.py
 ├── pyproject.toml
 └── README.md

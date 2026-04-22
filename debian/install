@@ -1,0 +1,3 @@
+main.py usr/lib/pomowatch/
+packaging/pomowatch usr/bin/
+packaging/pomowatch.desktop usr/share/applications/
