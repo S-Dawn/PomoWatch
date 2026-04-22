@@ -93,14 +93,14 @@ Files used:
 
 ### 1) Download the .deb from GitHub Release
 
-From the release page, download a file named like:
+From the release page, download:
 
-`pomowatch_<version>_all.deb`
+`pomowatch_0.1.0-1_all.deb`
 
 or use `wget`:
 
 ```bash
-wget https://github.com/S-Dawn/PomoWatch/releases/download/<tag>/pomowatch_<version>_all.deb
+wget https://github.com/S-Dawn/PomoWatch/releases/download/v0.1.0-1/pomowatch_0.1.0-1_all.deb
 ```
 
 ### 2) Install the downloaded file with apt
@@ -108,7 +108,7 @@ wget https://github.com/S-Dawn/PomoWatch/releases/download/<tag>/pomowatch_<vers
 From the folder containing the file:
 
 ```bash
-sudo apt install ./pomowatch_<version>_all.deb
+sudo apt install ./pomowatch_0.1.0-1_all.deb
 ```
 
 ### 3) Run the app
