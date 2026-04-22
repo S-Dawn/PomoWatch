@@ -45,6 +45,12 @@ Build image:
 docker build -t pomowatch:latest .
 ```
 
+Explanation:
+
+- `docker build` creates a Docker image from the Dockerfile in the current directory.
+- `-t pomowatch:latest` tags the image with the name `pomowatch` and tag `latest`.
+- `.` sets the build context to the current folder (project root).
+
 Run image on Linux with X11 and sound:
 
 ```bash
@@ -53,6 +59,27 @@ docker run --rm \
 	-e DISPLAY=$DISPLAY \
 	-v /tmp/.X11-unix:/tmp/.X11-unix \
 	--device /dev/snd \
+	pomowatch:latest
+xhost -local:docker
+```
+
+Explanation:
+
+- `xhost +local:docker` temporarily allows local Docker containers to access your X server so the Tkinter window can open.
+- `docker run --rm` starts the container and removes it automatically when the app exits.
+- `-e DISPLAY=$DISPLAY` passes your current X display environment into the container.
+- `-v /tmp/.X11-unix:/tmp/.X11-unix` mounts the X11 Unix socket so GUI drawing works.
+- `--device /dev/snd` passes the host audio device to the container so chimes can play.
+- `pomowatch:latest` is the image tag to run.
+- `xhost -local:docker` revokes the X server permission granted earlier.
+
+Optional run without audio:
+
+```bash
+xhost +local:docker
+docker run --rm \
+	-e DISPLAY=$DISPLAY \
+	-v /tmp/.X11-unix:/tmp/.X11-unix \
 	pomowatch:latest
 xhost -local:docker
 ```
