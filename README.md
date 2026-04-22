@@ -89,68 +89,62 @@ Files used:
 - `Dockerfile`
 - `.dockerignore`
 
-## Ubuntu `apt install` release path
+## Install on Ubuntu
 
-If you want users to install with:
+### 1) Download the .deb from GitHub Release
 
-```bash
-sudo apt install pomowatch
-```
+From the release page, download a file named like:
 
-you need to publish a Debian package to an APT repository. The most practical route for personal/open-source apps is a Launchpad PPA.
+`pomowatch_<version>_all.deb`
 
-### 1. Build and test the Debian package locally
-
-Debian packaging metadata is included in `debian/`.
-
-Install packaging tools:
+or use `wget`:
 
 ```bash
-sudo apt update
-sudo apt install -y build-essential devscripts debhelper dh-python dpkg-dev
+wget https://github.com/S-Dawn/PomoWatch/releases/download/<tag>/pomowatch_<version>_all.deb
 ```
 
-Build:
+### 2) Install the downloaded file with apt
+
+From the folder containing the file:
 
 ```bash
-dpkg-buildpackage -us -uc
+sudo apt install ./pomowatch_<version>_all.deb
 ```
 
-Install generated package for local test:
+### 3) Run the app
 
 ```bash
-sudo apt install ../pomowatch_0.1.0-1_all.deb
+pomowatch
 ```
 
-### 2. Publish through Launchpad PPA
+## For maintainers: build your own .deb
 
-1. Create a PPA on Launchpad.
-2. Update `debian/changelog` for each release.
-3. Generate source package:
+If you want to create a new `.deb` package from source, follow the guide in `BUILD_DEB.md`.
 
-```bash
-debuild -S -sa
-```
+### VS Code tasks for packaging
 
-4. Upload with `dput` to your PPA.
-5. After Launchpad builds successfully, users can install via:
+This project includes ready-made tasks in `.vscode/tasks.json`.
 
-```bash
-sudo add-apt-repository ppa:<your-launchpad-id>/<ppa-name>
-sudo apt update
-sudo apt install pomowatch
-```
+Open Command Palette and run `Tasks: Run Task`, then use:
 
-### Note about Ubuntu official repositories
+- `Package: Full .deb workflow` to install build dependencies, build the package, move `.deb` to `dist/`, and clean generated artifacts.
+- `Install: local .deb from dist` to install the generated package locally with apt.
 
-Publishing directly in Ubuntu official repositories requires Debian sponsorship and Ubuntu archive processes; this is longer-term. A PPA is the fastest path to `apt install`.
+You can also run individual steps with:
+
+- `Package: Install build dependencies`
+- `Package: Build .deb`
+- `Package: Move .deb to dist`
+- `Package: Clean generated artifacts`
 
 ## Project structure
 
 ```text
 .
 ├── .dockerignore
+├── BUILD_DEB.md
 ├── Dockerfile
+├── dist/
 ├── debian/
 ├── packaging/
 ├── main.py

@@ -2,14 +2,22 @@ import tkinter as tk
 from tkinter import ttk
 import threading
 
-import numpy as np
-import sounddevice as sd
 from ttkthemes import ThemedTk
+
+try:
+    import numpy as np
+    import sounddevice as sd
+except ImportError:
+    np = None
+    sd = None
 
 
 # ── Audio ─────────────────────────────────────────────────────────────────────
 
 def _chime_worker(work_done: bool) -> None:
+    if np is None or sd is None:
+        return
+
     sample_rate = 44100
     if work_done:
         # Ascending 4-note chime: C5 → E5 → G5 → C6
@@ -20,7 +28,7 @@ def _chime_worker(work_done: bool) -> None:
         notes = [783.99, 659.25, 523.25]
         durations = [0.22, 0.22, 0.50]
 
-    chunks: list[np.ndarray] = []
+    chunks = []
     for freq, dur in zip(notes, durations):
         n = int(sample_rate * dur)
         t = np.linspace(0.0, dur, n, endpoint=False)

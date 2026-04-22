@@ -35,6 +35,87 @@
         "panel": "dedicated"
       },
       "problemMatcher": []
+    },
+    {
+      "label": "Package: Install build dependencies",
+      "type": "shell",
+      "command": "sudo apt update && sudo apt install -y build-essential devscripts debhelper dh-python dpkg-dev",
+      "group": "build",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Package: Build .deb",
+      "type": "shell",
+      "command": "dpkg-buildpackage -us -uc",
+      "group": "build",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Package: Move .deb to dist",
+      "type": "shell",
+      "command": "mkdir -p dist && mv -f ../pomowatch_*_all.deb dist/",
+      "group": "build",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Package: Clean generated artifacts",
+      "type": "shell",
+      "command": "find .. -maxdepth 1 -type f \\( -name 'pomowatch_*.buildinfo' -o -name 'pomowatch_*.changes' -o -name 'pomowatch_*.dsc' -o -name 'pomowatch_*.tar.xz' -o -name 'pomowatch_*_all.deb' \\) -delete && rm -rf debian/.debhelper debian/pomowatch debian/debhelper-build-stamp debian/files && find debian -maxdepth 1 -type f \\( -name '*.debhelper' -o -name '*.substvars' \\) -delete",
+      "group": "build",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Install: local .deb from dist",
+      "type": "shell",
+      "command": "sudo apt install -y ./dist/pomowatch_*_all.deb",
+      "group": "test",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Package: Full .deb workflow",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "Package: Install build dependencies",
+        "Package: Build .deb",
+        "Package: Move .deb to dist",
+        "Package: Clean generated artifacts"
+      ],
+      "problemMatcher": []
     }
   ]
 }

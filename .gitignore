@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+*.pyc
+
+# Debian build artifacts
+*.deb
+*.dsc
+*.changes
+*.buildinfo
+*.tar.xz
+
+# Debhelper generated files in debian/
+debian/*.debhelper
+debian/*.substvars
+debian/files
+debian/debhelper-build-stamp
