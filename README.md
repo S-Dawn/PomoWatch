@@ -15,7 +15,17 @@ A simple Pomodoro timer desktop app built with Python and Tkinter.
 - Python 3.10+
 - [uv](https://github.com/astral-sh/uv)
 
-Tkinter is included with most standard Python distributions.
+Tkinter is included with most standard Python distributions. However, on some Linux systems it must be installed separately via the system package manager — it cannot be installed through pip, uv, or Poetry.
+
+**Debian/Ubuntu:**
+```bash
+sudo apt-get install python3-tk
+```
+
+**Fedora/RHEL:**
+```bash
+sudo dnf install python3-tkinter
+```
 
 ## Run with uv
 
@@ -23,12 +33,6 @@ From the project root:
 
 ```bash
 uv run main.py
-```
-
-Or run via the project script entry point:
-
-```bash
-uv run pomowatch
 ```
 
 ## Project structure
